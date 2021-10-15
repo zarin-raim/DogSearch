@@ -3,6 +3,7 @@ package com.zarinraim.dogsearch
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
             DogSearchTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    DogBreedsList()
                 }
             }
         }
@@ -25,14 +26,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun DogBreedsList(viewModel: DogBreedsListModel = DogBreedsListModel()) {
+    val dogBreeds = viewModel.dogBreeds.value
+    Text(dogBreeds.size.toString())
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun DefaultPreview() {
-    DogSearchTheme {
-        Greeting("Android")
-    }
+fun PreviewDogBreedList() {
+    DogBreedsList()
 }
