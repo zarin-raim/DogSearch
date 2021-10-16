@@ -12,7 +12,6 @@ class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
 
-
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

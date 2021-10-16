@@ -5,9 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DogImageScreen() {
+fun DogImageScreen(viewModel: BreedImageModel) {
+    val imageLink = viewModel.image.value
     Text(
-        text = "Details",
+        text = "$imageLink",
         fontSize = 28.sp
     )
 }

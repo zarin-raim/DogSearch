@@ -22,17 +22,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @ExperimentalMaterialApi
 @Composable
 fun BreedsListScreen(
+    navController: NavController,
     viewModel: DogBreedsListModel = DogBreedsListModel()
 ) {
     val dogBreeds = viewModel.dogBreeds.value
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (dogBreeds.isNotEmpty()) {
-            BreedsList(breeds = dogBreeds)
+            BreedsList(
+                breeds = dogBreeds,
+                navController = navController
+            )
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
@@ -41,7 +47,10 @@ fun BreedsListScreen(
 
 @ExperimentalMaterialApi
 @Composable
-fun BreedsList(breeds: Map<String, List<String>>) {
+fun BreedsList(
+    breeds: Map<String, List<String>>,
+    navController: NavController
+) {
     val mainBreedsList = breeds.keys.toList()
 
     LazyColumn(
@@ -53,7 +62,8 @@ fun BreedsList(breeds: Map<String, List<String>>) {
         items(mainBreedsList) { dogBreed ->
             BreedItem(
                 breedName = dogBreed,
-                subBreeds = breeds[dogBreed]
+                subBreeds = breeds[dogBreed],
+                navController = navController
             )
         }
     }
@@ -64,7 +74,8 @@ fun BreedsList(breeds: Map<String, List<String>>) {
 @Composable
 fun BreedItem(
     breedName: String,
-    subBreeds: List<String>?
+    subBreeds: List<String>?,
+    navController: NavController
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -80,7 +91,9 @@ fun BreedItem(
                 if (hasSubBreeds) {
                     expanded.value = !expanded.value
                 } else {
-                    //TODO
+                    navController.navigate(
+                        route = Screen.DogImage.route + "/$breedName"
+                    )
                 }
             }
     ) {
@@ -146,7 +159,7 @@ fun SubBreedItem(subBreedName: String) {
                 Toast
                     .makeText(context, subBreedName, Toast.LENGTH_SHORT)
                     .show()
-            },
+            }
     ) {
         Text(
             text = subBreedName,
@@ -179,7 +192,8 @@ fun PreviewDogBreedList() {
             "Corgi" to listOf("cardigan"),
             "Dingo" to listOf(),
             "Hound" to listOf("afghan", "basset")
-        )
+        ),
+        navController = rememberNavController()
     )
 }
 

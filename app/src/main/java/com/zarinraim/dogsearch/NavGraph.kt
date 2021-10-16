@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
 @ExperimentalMaterialApi
 @Composable
@@ -18,12 +19,16 @@ fun SetupNavGraph(
         composable(
             route = Screen.BreedsList.route
         ) {
-            BreedsListScreen()
+            val viewModel = DogBreedsListModel()
+            BreedsListScreen(navController = navController, viewModel = viewModel)
         }
         composable(
-            route = Screen.DogImage.route
-        ) {
-            DogImageScreen()
+            route = Screen.DogImage.route + "/{breedName}"
+        ) { navBackStack ->
+            val breedName = navBackStack.arguments?.getString("breedName")
+
+            val viewModel = BreedImageModel(breedName = breedName)
+            DogImageScreen(viewModel)
         }
     }
 }

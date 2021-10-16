@@ -3,6 +3,7 @@ package com.zarinraim.dogsearch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 private const val BASE_URL = "https://dog.ceo/api/"
 
@@ -16,7 +17,10 @@ private val retrofit = Retrofit.Builder()
  */
 interface DogApiService {
     @GET("breeds/list/all")
-    suspend fun getAllBreeds(): ApiResponse
+    suspend fun getAllBreeds(): AllBreedsResponse
+
+    @GET("breed/{breedName}/images/random")
+    suspend fun getImageByBreed(@Path("breedName") breedName: String): BreedImageResponse
 }
 
 object DogApi {
