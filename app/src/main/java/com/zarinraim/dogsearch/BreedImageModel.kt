@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.compose.rememberImagePainter
 import kotlinx.coroutines.launch
 
 class BreedImageModel(val breedName: String?, val subBreedName: String? = null) : ViewModel() {
@@ -17,7 +16,7 @@ class BreedImageModel(val breedName: String?, val subBreedName: String? = null) 
         )
     }
 
-    private fun getBreedImage(breedName: String?, subBreedName: String?){
+    private fun getBreedImage(breedName: String?, subBreedName: String?) {
         if (breedName != null && subBreedName == null) {
             viewModelScope.launch {
                 val listResult =
@@ -29,7 +28,8 @@ class BreedImageModel(val breedName: String?, val subBreedName: String? = null) 
                 val listResult =
                     DogApi.retrofitService.getImageBySubBreed(
                         breedName = breedName,
-                        subBreedName = subBreedName).message
+                        subBreedName = subBreedName
+                    ).message
                 image.value = listResult
             }
         }

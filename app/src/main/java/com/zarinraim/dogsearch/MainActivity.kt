@@ -6,12 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.zarinraim.dogsearch.ui.theme.DogSearchTheme
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
+    private lateinit var navController: NavHostController
 
+    @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
