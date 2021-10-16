@@ -92,7 +92,7 @@ fun BreedItem(
                     expanded.value = !expanded.value
                 } else {
                     navController.navigate(
-                        route = Screen.DogImage.route + "/$breedName"
+                        route = Screen.DogImage.route + "$breedName"
                     )
                 }
             }
@@ -131,34 +131,48 @@ fun BreedItem(
         }
 
         if (hasSubBreeds && expanded.value) {
-            SubBreedList(subBreeds)
+            SubBreedList(
+                breedName = breedName,
+                subBreeds = subBreeds,
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
 fun SubBreedList(
-    subBreeds: List<String>
+    breedName: String,
+    subBreeds: List<String>,
+    navController: NavController
 ) {
     Column {
         for (subBreedName in subBreeds) {
-            SubBreedItem(subBreedName = subBreedName)
+            SubBreedItem(
+                breedName = breedName,
+                subBreedName = subBreedName,
+                navController = navController
+            )
             Divider()
         }
     }
 }
 
 @Composable
-fun SubBreedItem(subBreedName: String) {
-    val context = LocalContext.current
+fun SubBreedItem(
+    breedName: String,
+    subBreedName: String,
+    navController: NavController
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(10.dp)
             .clickable {
-                Toast
-                    .makeText(context, subBreedName, Toast.LENGTH_SHORT)
-                    .show()
+                var request = breedName
+                navController.navigate(
+                    route = Screen.DogImage.route + "$breedName/$subBreedName"
+                )
             }
     ) {
         Text(

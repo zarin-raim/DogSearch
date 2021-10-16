@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.compose.rememberImagePainter
 import kotlinx.coroutines.launch
 
 class BreedImageModel(val breedName: String?) : ViewModel() {
