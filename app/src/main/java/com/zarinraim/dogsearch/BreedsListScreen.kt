@@ -92,7 +92,7 @@ fun BreedItem(
                     expanded.value = !expanded.value
                 } else {
                     navController.navigate(
-                        route = Screen.DogImage.route + "$breedName"
+                        route = Screen.DogImage.route + "/$breedName"
                     )
                 }
             }
@@ -147,6 +147,11 @@ fun SubBreedList(
     navController: NavController
 ) {
     Column {
+        SubBreedItem(
+            breedName = breedName,
+            subBreedName = "",
+            navController = navController
+        )
         for (subBreedName in subBreeds) {
             SubBreedItem(
                 breedName = breedName,
@@ -169,14 +174,18 @@ fun SubBreedItem(
         modifier = Modifier
             .padding(10.dp)
             .clickable {
-                var request = breedName
+                var request = "/$breedName"
+                request += if (subBreedName.isNotBlank()) {
+                    "/$subBreedName"
+                } else ""
+
                 navController.navigate(
-                    route = Screen.DogImage.route + "$breedName/$subBreedName"
+                    route = Screen.DogImage.route + request
                 )
             }
     ) {
         Text(
-            text = subBreedName,
+            text = if (subBreedName.isBlank()) "Any" else subBreedName,
             fontSize = 22.sp,
             modifier = Modifier
                 .weight(6f)

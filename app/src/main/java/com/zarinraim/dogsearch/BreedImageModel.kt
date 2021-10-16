@@ -7,19 +7,29 @@ import androidx.lifecycle.viewModelScope
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.launch
 
-class BreedImageModel(val breedName: String?) : ViewModel() {
+class BreedImageModel(val breedName: String?, val subBreedName: String? = null) : ViewModel() {
     val image: MutableState<String> = mutableStateOf(String())
 
     init {
-        getBreedImage(breedName)
+        getBreedImage(
+            breedName = breedName,
+            subBreedName = subBreedName
+        )
     }
 
-    private fun getBreedImage(breedName: String?){
-        if (breedName != null) {
+    private fun getBreedImage(breedName: String?, subBreedName: String?){
+        if (breedName != null && subBreedName == null) {
             viewModelScope.launch {
                 val listResult =
                     DogApi.retrofitService.getImageByBreed(breedName = breedName).message
-
+                image.value = listResult
+            }
+        } else if (breedName != null && subBreedName != null) {
+            viewModelScope.launch {
+                val listResult =
+                    DogApi.retrofitService.getImageBySubBreed(
+                        breedName = breedName,
+                        subBreedName = subBreedName).message
                 image.value = listResult
             }
         }
