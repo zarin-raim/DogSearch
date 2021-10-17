@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
+/**
+ * BreedImageModel provides access to a random image of a dog
+ * depending on the clicked breed/sub-breed
+ */
 class BreedImageModel(val breedName: String?, val subBreedName: String? = null) : ViewModel() {
     val image: MutableState<String> = mutableStateOf(String())
 
@@ -18,15 +22,16 @@ class BreedImageModel(val breedName: String?, val subBreedName: String? = null) 
 
     private fun getBreedImage(breedName: String?, subBreedName: String?) {
         viewModelScope.launch {
-            val listResult = if (breedName != null) {
-                when (subBreedName) {
-                    null -> DogApi.retrofitService.getImageByBreed(breedName = breedName).message
-                    else -> DogApi.retrofitService.getImageBySubBreed(
-                        breedName = breedName,
-                        subBreedName = subBreedName
-                    ).message
-                }
-            } else ""
+            val listResult =
+                if (breedName != null) {
+                    when (subBreedName) {
+                        null -> DogApi.retrofitService.getImageByBreed(breedName = breedName).message
+                        else -> DogApi.retrofitService.getImageBySubBreed(
+                            breedName = breedName,
+                            subBreedName = subBreedName
+                        ).message
+                    }
+                } else ""
 
             image.value = listResult
         }

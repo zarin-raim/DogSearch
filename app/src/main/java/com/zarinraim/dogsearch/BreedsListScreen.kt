@@ -30,16 +30,14 @@ fun BreedsListScreen(
 ) {
     val dogBreeds = viewModel.dogBreeds.value
 
-    val scrollPosition = remember { mutableStateOf(0) }
-    val listState = rememberLazyListState(scrollPosition.value)
+    val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (dogBreeds.isNotEmpty()) {
             BreedsList(
                 breeds = dogBreeds,
                 navController = navController,
-                listState = listState,
-                scrollPosition = scrollPosition
+                listState = listState
             )
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -52,12 +50,9 @@ fun BreedsListScreen(
 fun BreedsList(
     breeds: Map<String, List<String>>,
     navController: NavController,
-    listState: LazyListState,
-    scrollPosition: MutableState<Int> = mutableStateOf(0)
+    listState: LazyListState
 ) {
     val mainBreedsList = breeds.keys.toList()
-
-
 
     LazyColumn(
         modifier = Modifier
@@ -70,9 +65,7 @@ fun BreedsList(
             BreedItem(
                 breedName = dogBreed,
                 subBreeds = breeds[dogBreed],
-                navController = navController,
-                listState = listState,
-                scrollPosition = scrollPosition
+                navController = navController
             )
         }
     }
@@ -84,9 +77,7 @@ fun BreedsList(
 fun BreedItem(
     breedName: String,
     subBreeds: List<String>?,
-    navController: NavController,
-    listState: LazyListState,
-    scrollPosition: MutableState<Int>
+    navController: NavController
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -98,17 +89,6 @@ fun BreedItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                if (hasSubBreeds) {
-                    expanded.value = !expanded.value
-                } else {
-                    scrollPosition.value = listState.firstVisibleItemIndex
-
-                    navController.navigate(
-                        route = Screen.DogImage.route + "/$breedName"
-                    )
-                }
-            }
     ) {
         Surface(
             color = MaterialTheme.colors.primary
@@ -117,6 +97,18 @@ fun BreedItem(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .padding(10.dp)
+                    .clickable {
+                        if (hasSubBreeds) {
+                            expanded.value = !expanded.value
+                        } else {
+
+                            navigate(
+                                navController = navController,
+                                breedName = breedName,
+                                subBreedName = ""
+                            )
+                        }
+                    }
             ) {
 
                 Text(
@@ -189,13 +181,10 @@ fun SubBreedItem(
         modifier = Modifier
             .padding(10.dp)
             .clickable {
-                var request = "/$breedName"
-                request += if (subBreedName.isNotBlank()) {
-                    "/$subBreedName"
-                } else ""
-
-                navController.navigate(
-                    route = Screen.DogImage.route + request
+                navigate(
+                    navController = navController,
+                    breedName = breedName,
+                    subBreedName = subBreedName
                 )
             }
     ) {
@@ -219,6 +208,17 @@ fun SubBreedItem(
             )
         }
     }
+}
+
+fun navigate(navController: NavController, breedName: String, subBreedName: String) {
+    var request = "/$breedName"
+    request += if (subBreedName.isNotBlank()) {
+        "/$subBreedName"
+    } else ""
+
+    navController.navigate(
+        route = Screen.DogImage.route + request
+    )
 }
 
 @ExperimentalMaterialApi

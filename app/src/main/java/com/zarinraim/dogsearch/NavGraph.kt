@@ -12,7 +12,7 @@ import coil.annotation.ExperimentalCoilApi
 @Composable
 fun SetupNavGraph(
     navController: NavHostController
-){
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.BreedsList.route
