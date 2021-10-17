@@ -8,4 +8,5 @@
 5. Screen rotation behavior
 
 ## Known bugs
-- On 2nd+ attempt to open a breed, an images snaps before final open
+- On 2nd+ attempt to open a breed, one image blinks before final one opens
+- No search
