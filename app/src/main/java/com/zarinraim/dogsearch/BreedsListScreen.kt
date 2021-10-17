@@ -4,15 +4,14 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,11 +30,16 @@ fun BreedsListScreen(
 ) {
     val dogBreeds = viewModel.dogBreeds.value
 
+    val scrollPosition = remember { mutableStateOf(0) }
+    val listState = rememberLazyListState(scrollPosition.value)
+
     Box(modifier = Modifier.fillMaxSize()) {
         if (dogBreeds.isNotEmpty()) {
             BreedsList(
                 breeds = dogBreeds,
-                navController = navController
+                navController = navController,
+                listState = listState,
+                scrollPosition = scrollPosition
             )
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -47,21 +51,28 @@ fun BreedsListScreen(
 @Composable
 fun BreedsList(
     breeds: Map<String, List<String>>,
-    navController: NavController
+    navController: NavController,
+    listState: LazyListState,
+    scrollPosition: MutableState<Int> = mutableStateOf(0)
 ) {
     val mainBreedsList = breeds.keys.toList()
+
+
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        state = listState
     ) {
         items(mainBreedsList) { dogBreed ->
             BreedItem(
                 breedName = dogBreed,
                 subBreeds = breeds[dogBreed],
-                navController = navController
+                navController = navController,
+                listState = listState,
+                scrollPosition = scrollPosition
             )
         }
     }
@@ -73,7 +84,9 @@ fun BreedsList(
 fun BreedItem(
     breedName: String,
     subBreeds: List<String>?,
-    navController: NavController
+    navController: NavController,
+    listState: LazyListState,
+    scrollPosition: MutableState<Int>
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -89,6 +102,8 @@ fun BreedItem(
                 if (hasSubBreeds) {
                     expanded.value = !expanded.value
                 } else {
+                    scrollPosition.value = listState.firstVisibleItemIndex
+
                     navController.navigate(
                         route = Screen.DogImage.route + "/$breedName"
                     )
@@ -100,7 +115,8 @@ fun BreedItem(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier
+                    .padding(10.dp)
             ) {
 
                 Text(
@@ -108,6 +124,7 @@ fun BreedItem(
                     fontSize = 24.sp,
                     modifier = Modifier
                         .weight(6f)
+                        .padding(8.dp)
                 )
 
                 if (hasSubBreeds) {
@@ -214,7 +231,8 @@ fun PreviewDogBreedList() {
             "Dingo" to listOf(),
             "Hound" to listOf("afghan", "basset")
         ),
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        listState = rememberLazyListState()
     )
 }
 

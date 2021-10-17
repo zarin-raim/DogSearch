@@ -17,21 +17,18 @@ class BreedImageModel(val breedName: String?, val subBreedName: String? = null) 
     }
 
     private fun getBreedImage(breedName: String?, subBreedName: String?) {
-        if (breedName != null && subBreedName == null) {
-            viewModelScope.launch {
-                val listResult =
-                    DogApi.retrofitService.getImageByBreed(breedName = breedName).message
-                image.value = listResult
-            }
-        } else if (breedName != null && subBreedName != null) {
-            viewModelScope.launch {
-                val listResult =
-                    DogApi.retrofitService.getImageBySubBreed(
+        viewModelScope.launch {
+            val listResult = if (breedName != null) {
+                when (subBreedName) {
+                    null -> DogApi.retrofitService.getImageByBreed(breedName = breedName).message
+                    else -> DogApi.retrofitService.getImageBySubBreed(
                         breedName = breedName,
                         subBreedName = subBreedName
                     ).message
-                image.value = listResult
-            }
+                }
+            } else ""
+
+            image.value = listResult
         }
     }
 }

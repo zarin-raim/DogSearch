@@ -20,12 +20,15 @@ interface DogApiService {
     suspend fun getAllBreeds(): AllBreedsResponse
 
     @GET("breed/{breedName}/images/random")
-    suspend fun getImageByBreed(@Path("breedName") breedName: String): BreedImageResponse
+    suspend fun getImageByBreed(
+        @Path("breedName") breedName: String
+    ): BreedImageResponse
 
     @GET("breed/{breedName}/{subBreedName}/images/random")
     suspend fun getImageBySubBreed(
         @Path("breedName") breedName: String,
-        @Path("subBreedName") subBreedName: String ): BreedImageResponse
+        @Path("subBreedName") subBreedName: String
+    ): BreedImageResponse
 }
 
 object DogApi {

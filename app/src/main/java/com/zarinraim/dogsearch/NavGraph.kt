@@ -24,20 +24,20 @@ fun SetupNavGraph(
             BreedsListScreen(navController = navController, viewModel = viewModel)
         }
         composable(
-            route = Screen.DogImage.route + "/{breedName}"
-        ) { navBackStack ->
-            val breedName = navBackStack.arguments?.getString("breedName")
-
-            val viewModel = BreedImageModel(breedName = breedName)
-            DogImageScreen(viewModel)
-        }
-        composable(
             route = Screen.DogImage.route + "/{breedName}/{subBreedName}"
         ) { navBackStack ->
             val breedName = navBackStack.arguments?.getString("breedName")
             val subBreedName = navBackStack.arguments?.getString("subBreedName")
 
             val viewModel = BreedImageModel(breedName = breedName, subBreedName = subBreedName)
+            DogImageScreen(viewModel)
+        }
+        composable(
+            route = Screen.DogImage.route + "/{breedName}"
+        ) { navBackStack ->
+            val breedName = navBackStack.arguments?.getString("breedName")
+
+            val viewModel = BreedImageModel(breedName = breedName)
             DogImageScreen(viewModel)
         }
     }
