@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.ui.main.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.zarinraim.dogsearch.ui.main.navigation.SetupNavGraph
 import com.zarinraim.dogsearch.ui.theme.DogSearchTheme
 
 class MainActivity : ComponentActivity() {

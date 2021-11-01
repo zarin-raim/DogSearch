@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.ui.main
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
+import com.zarinraim.dogsearch.ui.main.navigation.Screen
 
 @ExperimentalMaterialApi
 @Composable

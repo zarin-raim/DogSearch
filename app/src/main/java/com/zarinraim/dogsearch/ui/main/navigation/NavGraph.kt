@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.ui.main.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -6,6 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import coil.annotation.ExperimentalCoilApi
+import com.zarinraim.dogsearch.ui.main.BreedsListScreen
+import com.zarinraim.dogsearch.ui.main.DogImageScreen
+import com.zarinraim.dogsearch.ui.main.viewmodel.BreedImageModel
+import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi

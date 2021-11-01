@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.data.model
 
 /**
  * Class to save DogApi response on fetching random dog image

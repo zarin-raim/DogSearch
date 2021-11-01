@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.ui.main.navigation
 
 sealed class Screen(val route: String) {
     object BreedsList : Screen(route = "breeds_list_screen")

@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.ui.main
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.zarinraim.dogsearch.ui.main.viewmodel.BreedImageModel
 
 @ExperimentalCoilApi
 @Composable
