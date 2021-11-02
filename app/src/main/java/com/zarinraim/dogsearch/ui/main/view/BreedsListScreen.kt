@@ -20,17 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.zarinraim.dogsearch.R
 import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
-import com.zarinraim.dogsearch.ui.main.navigation.Screen
 
 @ExperimentalMaterialApi
 @Composable
 fun BreedsListScreen(
-    navController: NavController,
-    viewModel: DogBreedsListModel = DogBreedsListModel()
+    viewModel: DogBreedsListModel = DogBreedsListModel(),
+    onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
     val dogBreeds = viewModel.dogBreeds.value
 
@@ -40,8 +37,8 @@ fun BreedsListScreen(
         if (dogBreeds.isNotEmpty()) {
             BreedsList(
                 breeds = dogBreeds,
-                navController = navController,
-                listState = listState
+                listState = listState,
+                onClickOpenImage = onClickOpenImage
             )
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -53,8 +50,8 @@ fun BreedsListScreen(
 @Composable
 fun BreedsList(
     breeds: Map<String, List<String>>,
-    navController: NavController,
-    listState: LazyListState
+    listState: LazyListState,
+    onClickOpenImage: (String, String) -> Unit
 ) {
     val mainBreedsList = breeds.keys.toList()
 
@@ -69,7 +66,7 @@ fun BreedsList(
             BreedItem(
                 breedName = dogBreed,
                 subBreeds = breeds[dogBreed],
-                navController = navController
+                onClickOpenImage = onClickOpenImage
             )
         }
     }
@@ -81,7 +78,7 @@ fun BreedsList(
 fun BreedItem(
     breedName: String,
     subBreeds: List<String>?,
-    navController: NavController
+    onClickOpenImage: (String, String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -105,12 +102,7 @@ fun BreedItem(
                         if (hasSubBreeds) {
                             expanded.value = !expanded.value
                         } else {
-
-                            navigate(
-                                navController = navController,
-                                breedName = breedName,
-                                subBreedName = ""
-                            )
+                            onClickOpenImage(breedName, "")
                         }
                     }
             ) {
@@ -145,7 +137,7 @@ fun BreedItem(
             SubBreedList(
                 breedName = breedName,
                 subBreeds = subBreeds,
-                navController = navController
+                onClickOpenImage = onClickOpenImage
             )
         }
     }
@@ -155,19 +147,19 @@ fun BreedItem(
 fun SubBreedList(
     breedName: String,
     subBreeds: List<String>,
-    navController: NavController
+    onClickOpenImage: (String, String) -> Unit
 ) {
     Column {
         SubBreedItem(
             breedName = breedName,
             subBreedName = "",
-            navController = navController
+            onClickOpenImage = onClickOpenImage
         )
         for (subBreedName in subBreeds) {
             SubBreedItem(
                 breedName = breedName,
                 subBreedName = subBreedName,
-                navController = navController
+                onClickOpenImage = onClickOpenImage
             )
             Divider()
         }
@@ -178,18 +170,14 @@ fun SubBreedList(
 fun SubBreedItem(
     breedName: String,
     subBreedName: String,
-    navController: NavController
+    onClickOpenImage: (String, String) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(10.dp)
             .clickable {
-                navigate(
-                    navController = navController,
-                    breedName = breedName,
-                    subBreedName = subBreedName
-                )
+                onClickOpenImage(breedName, subBreedName)
             }
     ) {
         Text(
@@ -218,17 +206,6 @@ fun SubBreedItem(
     }
 }
 
-fun navigate(navController: NavController, breedName: String, subBreedName: String) {
-    var request = "/$breedName"
-    request += if (subBreedName.isNotBlank()) {
-        "/$subBreedName"
-    } else ""
-
-    navController.navigate(
-        route = Screen.DogImage.route + request
-    )
-}
-
 @ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
@@ -239,8 +216,8 @@ fun PreviewDogBreedList() {
             "Dingo" to listOf(),
             "Hound" to listOf("afghan", "basset")
         ),
-        navController = rememberNavController(),
-        listState = rememberLazyListState()
+        listState = rememberLazyListState(),
+        onClickOpenImage = { _, _ -> }
     )
 }
 
