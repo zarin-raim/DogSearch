@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.ui.main
+package com.zarinraim.dogsearch.ui.main.view
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image

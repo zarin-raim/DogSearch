@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.ui.main
+package com.zarinraim.dogsearch.ui.main.view
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
