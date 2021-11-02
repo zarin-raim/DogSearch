@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.zarinraim.dogsearch.ui.main.viewmodel.BreedImageModel
+import com.zarinraim.dogsearch.R
 
 @ExperimentalCoilApi
 @Composable
@@ -114,8 +116,7 @@ fun Content(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val caption = breedName +
-                if (subBreedName.isNullOrEmpty()) "" else " $subBreedName"
+        val caption = stringResource(id = R.string.breed_caption, breedName, subBreedName ?: "")
 
         Text(
             text = caption,

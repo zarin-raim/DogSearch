@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DogSearch</string>
+    <string name="any_sub_breed">Any</string>
+    <string name="breed_caption">%s %s</string>
 </resources>

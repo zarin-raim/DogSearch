@@ -16,11 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.zarinraim.dogsearch.R
 import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
 import com.zarinraim.dogsearch.ui.main.navigation.Screen
 
@@ -191,7 +193,11 @@ fun SubBreedItem(
             }
     ) {
         Text(
-            text = if (subBreedName.isBlank()) "Any" else subBreedName,
+            text = if (subBreedName.isBlank()) {
+                stringResource(id = R.string.any_sub_breed)
+            } else {
+                subBreedName
+            },
             fontSize = 22.sp,
             modifier = Modifier
                 .weight(6f)
