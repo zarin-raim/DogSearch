@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import coil.annotation.ExperimentalCoilApi
-import com.zarinraim.dogsearch.ui.main.BreedsListScreen
-import com.zarinraim.dogsearch.ui.main.DogImageScreen
+import com.zarinraim.dogsearch.ui.main.view.BreedsListScreen
+import com.zarinraim.dogsearch.ui.main.view.DogImageScreen
 import com.zarinraim.dogsearch.ui.main.viewmodel.BreedImageModel
 import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
 
