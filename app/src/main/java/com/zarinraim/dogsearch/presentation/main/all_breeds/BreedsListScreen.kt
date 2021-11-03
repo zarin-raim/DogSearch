@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.ui.main.view
+package com.zarinraim.dogsearch.presentation.main.all_breeds
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zarinraim.dogsearch.R
-import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
 
 @ExperimentalMaterialApi
 @Composable
@@ -29,6 +28,7 @@ fun BreedsListScreen(
     viewModel: DogBreedsListModel = DogBreedsListModel(),
     onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
+//    val viewModel = ViewModelProvider().get(DogBreedsListModel::class.java)
     val dogBreeds = viewModel.dogBreeds.value
 
     val listState = rememberLazyListState()

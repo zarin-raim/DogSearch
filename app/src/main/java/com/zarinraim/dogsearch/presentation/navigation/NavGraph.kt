@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.ui.main.navigation
+package com.zarinraim.dogsearch.presentation.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
-import com.zarinraim.dogsearch.ui.main.view.BreedsListScreen
-import com.zarinraim.dogsearch.ui.main.view.DogImageScreen
-import com.zarinraim.dogsearch.ui.main.viewmodel.BreedImageModel
-import com.zarinraim.dogsearch.ui.main.viewmodel.DogBreedsListModel
+import com.zarinraim.dogsearch.presentation.main.all_breeds.BreedsListScreen
+import com.zarinraim.dogsearch.presentation.main.all_breeds.DogImageScreen
+import com.zarinraim.dogsearch.presentation.main.dog_image.BreedImageModel
+import com.zarinraim.dogsearch.presentation.main.all_breeds.DogBreedsListModel
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -27,6 +27,7 @@ fun SetupNavGraph(
             route = Screen.BreedsList.route
         ) {
             val viewModel = DogBreedsListModel()
+//            val viewModel = ViewModelProvider(View).get(DogBreedsListModel::class.java)
             BreedsListScreen(
                 viewModel = viewModel,
                 onClickOpenImage = { breedName, subBreedName ->

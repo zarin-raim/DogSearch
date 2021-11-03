@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.ui.theme
+package com.zarinraim.dogsearch.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
