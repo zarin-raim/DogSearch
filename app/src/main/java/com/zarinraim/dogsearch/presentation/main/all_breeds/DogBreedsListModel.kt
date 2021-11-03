@@ -4,15 +4,17 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zarinraim.dogsearch.data.api.DogApi
+import com.zarinraim.dogsearch.data.model.toAllBreeds
+import com.zarinraim.dogsearch.domain.model.AllBreeds
+import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 import kotlinx.coroutines.launch
 
-class DogBreedsListModel : ViewModel() {
-    val dogBreeds: MutableState<Map<String, List<String>>> = mutableStateOf(mapOf())
+class DogBreedsListModel(private val repo: BreedsRepository) : ViewModel() {
+    val dogBreeds: MutableState<AllBreeds> = mutableStateOf(AllBreeds(mapOf()))
 
     init {
         viewModelScope.launch {
-            val listResult = DogApi.retrofitService.getAllBreeds().message
+            val listResult = repo.getAllBreeds().toAllBreeds()
 
             dogBreeds.value = listResult
         }

@@ -26,10 +26,10 @@ fun SetupNavGraph(
         composable(
             route = Screen.BreedsList.route
         ) {
-            val viewModel = DogBreedsListModel()
+//            val viewModel = DogBreedsListModel()
 //            val viewModel = ViewModelProvider(View).get(DogBreedsListModel::class.java)
             BreedsListScreen(
-                viewModel = viewModel,
+//                viewModel = viewModel,
                 onClickOpenImage = { breedName, subBreedName ->
                     navigateToImageScreen(navController, breedName, subBreedName)
                 }

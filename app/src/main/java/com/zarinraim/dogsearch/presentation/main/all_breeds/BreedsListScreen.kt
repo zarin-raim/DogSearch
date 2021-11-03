@@ -21,22 +21,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zarinraim.dogsearch.R
+import com.zarinraim.dogsearch.domain.model.AllBreeds
+import com.zarinraim.dogsearch.domain.model.Breed
+import com.zarinraim.dogsearch.domain.model.SubBreeds
+import org.koin.androidx.compose.viewModel
 
 @ExperimentalMaterialApi
 @Composable
 fun BreedsListScreen(
-    viewModel: DogBreedsListModel = DogBreedsListModel(),
     onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
-//    val viewModel = ViewModelProvider().get(DogBreedsListModel::class.java)
-    val dogBreeds = viewModel.dogBreeds.value
+    // lazy inject ViewModel
+    val viewModel: DogBreedsListModel by viewModel()
+    // get AllBreeds object from ViewModel
+    val allBreeds = viewModel.dogBreeds.value
 
     val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (dogBreeds.isNotEmpty()) {
+        if (allBreeds.map.isNotEmpty()) {
             BreedsList(
-                breeds = dogBreeds,
+                breeds = allBreeds,
                 listState = listState,
                 onClickOpenImage = onClickOpenImage
             )
@@ -49,11 +54,11 @@ fun BreedsListScreen(
 @ExperimentalMaterialApi
 @Composable
 fun BreedsList(
-    breeds: Map<String, List<String>>,
+    breeds: AllBreeds,
     listState: LazyListState,
     onClickOpenImage: (String, String) -> Unit
 ) {
-    val mainBreedsList = breeds.keys.toList()
+    val mainBreedsList = breeds.map.keys.toList()
 
     LazyColumn(
         modifier = Modifier
@@ -62,22 +67,22 @@ fun BreedsList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         state = listState
     ) {
-        items(mainBreedsList) { dogBreed ->
+
+        items(mainBreedsList) { breed ->
             BreedItem(
-                breedName = dogBreed,
-                subBreeds = breeds[dogBreed],
+                breed = breed,
+                subBreeds = breeds.map[breed],
                 onClickOpenImage = onClickOpenImage
             )
         }
     }
 }
 
-
 @ExperimentalMaterialApi
 @Composable
 fun BreedItem(
-    breedName: String,
-    subBreeds: List<String>?,
+    breed: Breed,
+    subBreeds: SubBreeds?,
     onClickOpenImage: (String, String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
@@ -85,7 +90,7 @@ fun BreedItem(
         targetValue = if (expanded.value) 180f else 0f
     )
 
-    val hasSubBreeds = subBreeds!!.isNotEmpty()
+    val hasSubBreeds = subBreeds!!.list.isNotEmpty()
 
     Column(
         modifier = Modifier
@@ -102,13 +107,13 @@ fun BreedItem(
                         if (hasSubBreeds) {
                             expanded.value = !expanded.value
                         } else {
-                            onClickOpenImage(breedName, "")
+                            onClickOpenImage(breed.name, "")
                         }
                     }
             ) {
 
                 Text(
-                    text = breedName,
+                    text = breed.name,
                     fontSize = 24.sp,
                     modifier = Modifier
                         .weight(6f)
@@ -135,8 +140,8 @@ fun BreedItem(
 
         if (hasSubBreeds && expanded.value) {
             SubBreedList(
-                breedName = breedName,
-                subBreeds = subBreeds,
+                breedName = breed.name,
+                subBreeds = subBreeds.list,
                 onClickOpenImage = onClickOpenImage
             )
         }
@@ -211,10 +216,12 @@ fun SubBreedItem(
 @Composable
 fun PreviewDogBreedList() {
     BreedsList(
-        breeds = mapOf(
-            "Corgi" to listOf("cardigan"),
-            "Dingo" to listOf(),
-            "Hound" to listOf("afghan", "basset")
+        breeds = AllBreeds(
+            mapOf(
+                Breed("Corgi") to SubBreeds(listOf("cardigan")),
+                Breed("Dingo") to SubBreeds(listOf()),
+                Breed("Hound") to SubBreeds(listOf("afghan", "basset"))
+            )
         ),
         listState = rememberLazyListState(),
         onClickOpenImage = { _, _ -> }
