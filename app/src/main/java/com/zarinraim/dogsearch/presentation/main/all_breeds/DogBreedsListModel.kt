@@ -1,22 +1,21 @@
 package com.zarinraim.dogsearch.presentation.main.all_breeds
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zarinraim.dogsearch.data.model.toBreeds
-import com.zarinraim.dogsearch.domain.model.Breeds
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 import kotlinx.coroutines.launch
 
 class DogBreedsListModel(private val repo: BreedsRepository) : ViewModel() {
-    val dogBreeds: MutableState<Breeds> = mutableStateOf(Breeds(mapOf()))
+
+    private val _state = mutableStateOf(BreedsListState())
+    val state: State<BreedsListState> = _state
 
     init {
         viewModelScope.launch {
-            val listResult = repo.getBreeds().toBreeds()
-
-            dogBreeds.value = listResult
+            _state.value = BreedsListState(breeds = repo.getBreeds().toBreeds())
         }
     }
 }

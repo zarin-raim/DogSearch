@@ -31,17 +31,15 @@ import org.koin.androidx.compose.viewModel
 fun BreedsListScreen(
     onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
-    // lazy inject ViewModel
     val viewModel: DogBreedsListModel by viewModel()
-    // get AllBreeds object from ViewModel
-    val allBreeds = viewModel.dogBreeds.value
+    val state = viewModel.state.value
 
     val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (allBreeds.value.isNotEmpty()) {
+        if (state.breeds.value.isNotEmpty()) {
             BreedsList(
-                breeds = allBreeds,
+                breeds = state.breeds,
                 listState = listState,
                 onClickOpenImage = onClickOpenImage
             )

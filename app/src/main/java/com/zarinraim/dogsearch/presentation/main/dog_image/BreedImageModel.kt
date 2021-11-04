@@ -1,11 +1,10 @@
 package com.zarinraim.dogsearch.presentation.main.dog_image
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zarinraim.dogsearch.data.model.toDogImage
-import com.zarinraim.dogsearch.domain.model.DogImage
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 import kotlinx.coroutines.launch
 
@@ -18,7 +17,9 @@ class BreedImageModel(
     val breedName: String,
     val subBreedName: String
 ) : ViewModel() {
-    val image: MutableState<DogImage> = mutableStateOf(DogImage(String()))
+
+    private val _state = mutableStateOf(BreedImageState())
+    val state: State<BreedImageState> = _state
 
     init {
         getBreedImage(
@@ -29,16 +30,18 @@ class BreedImageModel(
 
     private fun getBreedImage(breedName: String, subBreedName: String) {
         viewModelScope.launch {
-            val imageSrc =
+            _state.value =
                 when (subBreedName) {
-                    "" -> repo.getImageByBreed(breedName = breedName).toDogImage()
-                    else -> repo.getImageBySubBreed(
-                        breedName = breedName,
-                        subBreedName = subBreedName
-                    ).toDogImage()
+                    "" -> BreedImageState(
+                        src = repo.getImageByBreed(breedName = breedName).toDogImage().src
+                    )
+                    else -> BreedImageState(
+                        src = repo.getImageBySubBreed(
+                            breedName = breedName,
+                            subBreedName = subBreedName
+                        ).toDogImage().src
+                    )
                 }
-
-            image.value = imageSrc
         }
     }
 }

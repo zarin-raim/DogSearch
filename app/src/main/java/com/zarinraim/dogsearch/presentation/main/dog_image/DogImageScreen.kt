@@ -21,11 +21,11 @@ import com.zarinraim.dogsearch.R
 @ExperimentalCoilApi
 @Composable
 fun DogImageScreen(viewModel: BreedImageModel) {
-    val imageLink = viewModel.image.value
+    val state = viewModel.state.value
 
     DogImage(
-        imageLink = imageLink.src,
-        breedName = viewModel.breedName!!,
+        imageLink = state.src,
+        breedName = viewModel.breedName,
         subBreedName = viewModel.subBreedName
     )
 }
