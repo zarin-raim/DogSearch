@@ -1,5 +1,6 @@
 package com.zarinraim.dogsearch.domain.model
 
-data class SubBreeds(
+@JvmInline
+value class SubBreeds(
     val list: List<String>
 )

@@ -1,5 +1,6 @@
 package com.zarinraim.dogsearch.domain.model
 
-data class Breed (
+@JvmInline
+value class Breed (
     val name: String
 )
