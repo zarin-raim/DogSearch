@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.main.all_breeds
+package com.zarinraim.dogsearch.presentation.main.dog_image
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.zarinraim.dogsearch.presentation.main.dog_image.BreedImageModel
 import com.zarinraim.dogsearch.R
 
 @ExperimentalCoilApi
@@ -25,7 +24,7 @@ fun DogImageScreen(viewModel: BreedImageModel) {
     val imageLink = viewModel.image.value
 
     DogImage(
-        imageLink = imageLink,
+        imageLink = imageLink.src,
         breedName = viewModel.breedName!!,
         subBreedName = viewModel.subBreedName
     )

@@ -10,7 +10,9 @@ class BreedRepositoryImpl : BreedsRepository {
         return DogApi.retrofitService.getAllBreeds()
     }
 
-    override suspend fun getImageByBreed(breedName: String): BreedImageResponse {
+    override suspend fun getImageByBreed(
+        breedName: String
+    ): BreedImageResponse {
         return DogApi.retrofitService.getImageByBreed(breedName)
     }
 
