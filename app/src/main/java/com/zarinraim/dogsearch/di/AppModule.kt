@@ -10,5 +10,11 @@ import org.koin.dsl.module
 val appModule = module {
     single<BreedsRepository> { BreedRepositoryImpl() }
     viewModel { DogBreedsListModel(get()) }
-    viewModel { BreedImageModel(get(), get()) }
+    viewModel { (breedName: String, subBreedName: String) ->
+        BreedImageModel(
+            get(),
+            breedName,
+            subBreedName
+        )
+    }
 }

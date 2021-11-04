@@ -65,7 +65,7 @@ fun SetupNavGraph(
             val breedName = navBackStack.arguments?.getString("breedName")
 
             val viewModel = getViewModel<BreedImageModel> {
-                parametersOf(breedName)
+                parametersOf(breedName, "")
             }
             DogImageScreen(viewModel)
         }

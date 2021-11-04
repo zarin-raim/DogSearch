@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
  */
 class BreedImageModel(
     private val repo: BreedsRepository,
-    val breedName: String?,
-    val subBreedName: String? = null
+    val breedName: String,
+    val subBreedName: String
 ) : ViewModel() {
     val image: MutableState<DogImage> = mutableStateOf(DogImage(String()))
 
@@ -27,18 +27,16 @@ class BreedImageModel(
         )
     }
 
-    private fun getBreedImage(breedName: String?, subBreedName: String?) {
+    private fun getBreedImage(breedName: String, subBreedName: String) {
         viewModelScope.launch {
             val imageSrc =
-                if (breedName != null) {
-                    when (subBreedName) {
-                        null -> repo.getImageByBreed(breedName = breedName).toDogImage()
-                        else -> repo.getImageBySubBreed(
-                            breedName = breedName,
-                            subBreedName = subBreedName
-                        ).toDogImage()
-                    }
-                } else DogImage("")
+                when (subBreedName) {
+                    "" -> repo.getImageByBreed(breedName = breedName).toDogImage()
+                    else -> repo.getImageBySubBreed(
+                        breedName = breedName,
+                        subBreedName = subBreedName
+                    ).toDogImage()
+                }
 
             image.value = imageSrc
         }
