@@ -13,12 +13,7 @@ data class BreedsResponse(
 )
 
 fun BreedsResponse.toBreeds(): Breeds {
-    val mapOfBreeds: MutableMap<Breed, SubBreeds> = mutableMapOf()
-    for (item in message) {
-        mapOfBreeds[Breed(item.key)] = SubBreeds(item.value)
-    }
-
-    return Breeds(
-        map = mapOfBreeds
-    )
+    return Breeds(value = message.entries.associate {
+        Breed(it.key) to SubBreeds(it.value)
+    })
 }
