@@ -39,7 +39,7 @@ fun BreedsListScreen(
     val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (allBreeds.map.isNotEmpty()) {
+        if (allBreeds.value.isNotEmpty()) {
             BreedsList(
                 breeds = allBreeds,
                 listState = listState,
@@ -58,7 +58,7 @@ fun BreedsList(
     listState: LazyListState,
     onClickOpenImage: (String, String) -> Unit
 ) {
-    val mainBreedsList = breeds.map.keys.toList()
+    val mainBreedsList = breeds.value.keys.toList()
 
     LazyColumn(
         modifier = Modifier
@@ -71,7 +71,7 @@ fun BreedsList(
         items(mainBreedsList) { breed ->
             BreedItem(
                 breed = breed,
-                subBreeds = breeds.map[breed],
+                subBreeds = breeds.value[breed],
                 onClickOpenImage = onClickOpenImage
             )
         }
