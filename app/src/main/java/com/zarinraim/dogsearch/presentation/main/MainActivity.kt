@@ -7,14 +7,8 @@ import androidx.compose.material.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
-import com.zarinraim.dogsearch.di.appModule
-import com.zarinraim.dogsearch.presentation.main.all_breeds.DogBreedsListModel
 import com.zarinraim.dogsearch.presentation.navigation.SetupNavGraph
 import com.zarinraim.dogsearch.presentation.ui.theme.DogSearchTheme
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
 
@@ -29,11 +23,6 @@ class MainActivity : ComponentActivity() {
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
             }
-        }
-        startKoin {
-            androidLogger()
-            androidContext(this@MainActivity)
-            modules(appModule)
         }
     }
 }
