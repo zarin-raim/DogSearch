@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.main.dog_image
+package com.zarinraim.dogsearch.feature.detail
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

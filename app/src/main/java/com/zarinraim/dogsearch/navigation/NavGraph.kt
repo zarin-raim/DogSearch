@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.navigation
+package com.zarinraim.dogsearch.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -8,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
-import com.zarinraim.dogsearch.presentation.main.all_breeds.BreedsListScreen
-import com.zarinraim.dogsearch.presentation.main.dog_image.DogImageScreen
-import com.zarinraim.dogsearch.presentation.main.dog_image.BreedImageModel
+import com.zarinraim.dogsearch.feature.list.BreedsListScreen
+import com.zarinraim.dogsearch.feature.detail.DogImageScreen
+import com.zarinraim.dogsearch.feature.detail.BreedImageModel
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 

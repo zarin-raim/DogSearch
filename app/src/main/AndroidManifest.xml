@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DogSearch">
         <activity
-            android:name=".presentation.main.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.DogSearch.NoActionBar">

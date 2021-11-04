@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.ui.theme
+package com.zarinraim.dogsearch.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

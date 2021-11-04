@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.main.dog_image
+package com.zarinraim.dogsearch.feature.detail
 
 data class BreedImageState(
     val isLoading: Boolean = false,

@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch.presentation.main.all_breeds
+package com.zarinraim.dogsearch.feature.list
 
 import com.zarinraim.dogsearch.domain.model.Breeds
 
