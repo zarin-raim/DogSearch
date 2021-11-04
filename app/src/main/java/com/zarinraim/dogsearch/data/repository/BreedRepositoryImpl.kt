@@ -1,13 +1,13 @@
 package com.zarinraim.dogsearch.data.repository
 
 import com.zarinraim.dogsearch.data.api.DogApi
-import com.zarinraim.dogsearch.data.model.AllBreedsResponse
+import com.zarinraim.dogsearch.data.model.BreedsResponse
 import com.zarinraim.dogsearch.data.model.BreedImageResponse
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 
 class BreedRepositoryImpl : BreedsRepository {
-    override suspend fun getAllBreeds(): AllBreedsResponse {
-        return DogApi.retrofitService.getAllBreeds()
+    override suspend fun getBreeds(): BreedsResponse {
+        return DogApi.retrofitService.getBreeds()
     }
 
     override suspend fun getImageByBreed(

@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zarinraim.dogsearch.R
-import com.zarinraim.dogsearch.domain.model.AllBreeds
+import com.zarinraim.dogsearch.domain.model.Breeds
 import com.zarinraim.dogsearch.domain.model.Breed
 import com.zarinraim.dogsearch.domain.model.SubBreeds
 import org.koin.androidx.compose.viewModel
@@ -54,7 +54,7 @@ fun BreedsListScreen(
 @ExperimentalMaterialApi
 @Composable
 fun BreedsList(
-    breeds: AllBreeds,
+    breeds: Breeds,
     listState: LazyListState,
     onClickOpenImage: (String, String) -> Unit
 ) {
@@ -216,7 +216,7 @@ fun SubBreedItem(
 @Composable
 fun PreviewDogBreedList() {
     BreedsList(
-        breeds = AllBreeds(
+        breeds = Breeds(
             mapOf(
                 Breed("Corgi") to SubBreeds(listOf("cardigan")),
                 Breed("Dingo") to SubBreeds(listOf()),

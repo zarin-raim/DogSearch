@@ -1,5 +1,5 @@
 package com.zarinraim.dogsearch.domain.model
 
-data class AllBreeds(
+data class Breeds(
     val map: Map<Breed, SubBreeds>
 )
