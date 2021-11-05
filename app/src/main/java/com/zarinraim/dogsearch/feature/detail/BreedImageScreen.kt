@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
@@ -28,11 +29,31 @@ import com.zarinraim.dogsearch.R
 fun DogImageScreen(viewModel: BreedImageViewModel) {
     val state = viewModel.state.value
 
-    DogImage(
-        imageLink = state.src,
-        breedName = viewModel.breedName,
-        subBreedName = viewModel.subBreedName
-    )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        DogImage(
+            imageLink = state.src,
+            breedName = viewModel.breedName,
+            subBreedName = viewModel.subBreedName
+        )
+
+        if (state.error.isNotBlank()) {
+            Text(
+                text = state.error,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            )
+        }
+
+        if (state.isLoading) {
+            CircularProgressIndicator()
+        }
+    }
 }
 
 @ExperimentalCoilApi
@@ -42,63 +63,57 @@ fun DogImage(
     breedName: String,
     subBreedName: String?
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        val painter = rememberImagePainter(imageLink)
-        val painterState = painter.state
-        if (painterState is ImagePainter.State.Loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-        val configuration = LocalConfiguration.current
+    val painter = rememberImagePainter(imageLink)
+    val painterState = painter.state
+    if (painterState is ImagePainter.State.Loading) {
+        CircularProgressIndicator()
+    }
+    val configuration = LocalConfiguration.current
 
-        when (configuration.orientation) {
+    when (configuration.orientation) {
 
-            Configuration.ORIENTATION_LANDSCAPE -> {
+        Configuration.ORIENTATION_LANDSCAPE -> {
 
-                Row(
-                    modifier = Modifier
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Content(
+                    painter = painter,
+                    imageModifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    Content(
-                        painter = painter,
-                        imageModifier = Modifier
-                            .fillMaxSize()
-                            .weight(2f),
-                        buttonModifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f),
-                        breedName = breedName,
-                        subBreedName = subBreedName
-                    )
-                }
+                        .weight(2f),
+                    buttonModifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    breedName = breedName,
+                    subBreedName = subBreedName
+                )
             }
-            else -> {
-                Column(
-                    modifier = Modifier
+        }
+        else -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Content(
+                    painter = painter,
+                    imageModifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    Content(
-                        painter = painter,
-                        imageModifier = Modifier
-                            .fillMaxSize()
-                            .weight(IMAGE_WEIGHT),
-                        buttonModifier = Modifier
-                            .fillMaxSize()
-                            .weight(TITLE_WEIGHT),
-                        breedName = breedName,
-                        subBreedName = subBreedName
-                    )
-                }
+                        .weight(IMAGE_WEIGHT),
+                    buttonModifier = Modifier
+                        .fillMaxSize()
+                        .weight(TITLE_WEIGHT),
+                    breedName = breedName,
+                    subBreedName = subBreedName
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun Content(
