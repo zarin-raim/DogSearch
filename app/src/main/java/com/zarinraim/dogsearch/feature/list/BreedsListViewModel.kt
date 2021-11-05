@@ -39,6 +39,10 @@ class BreedsListViewModel(private val repo: BreedsRepository) : ViewModel() {
             }
         }
     }
+
+    fun refresh(){
+        getBreeds()
+    }
 }
 
 data class BreedsListState(

@@ -61,6 +61,13 @@ class BreedImageViewModel(
             }
         }
     }
+
+    fun getNextRandomImage(){
+        getBreedImage(
+            breedName = breedName,
+            subBreedName = subBreedName
+        )
+    }
 }
 
 data class BreedImageState(
