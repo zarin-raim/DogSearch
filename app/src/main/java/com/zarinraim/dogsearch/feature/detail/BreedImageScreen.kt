@@ -87,10 +87,10 @@ fun DogImage(
                         painter = painter,
                         imageModifier = Modifier
                             .fillMaxSize()
-                            .weight(3f),
+                            .weight(IMAGE_WEIGHT),
                         buttonModifier = Modifier
                             .fillMaxSize()
-                            .weight(1f),
+                            .weight(TITLE_WEIGHT),
                         breedName = breedName,
                         subBreedName = subBreedName
                     )
@@ -140,3 +140,6 @@ fun Content(
 //        }
     }
 }
+
+private const val IMAGE_WEIGHT = 6f
+private const val TITLE_WEIGHT = 1f

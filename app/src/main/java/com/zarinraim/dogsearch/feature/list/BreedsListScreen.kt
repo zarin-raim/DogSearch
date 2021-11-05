@@ -102,7 +102,7 @@ fun BreedItem(
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
-        targetValue = if (expanded.value) 180f else 0f
+        targetValue = if (expanded.value) ROTATION_ANGLE else 0f
     )
 
     val hasSubBreeds = subBreeds?.list?.isNotEmpty() ?: false
@@ -131,7 +131,7 @@ fun BreedItem(
                     text = breed.name,
                     fontSize = 24.sp,
                     modifier = Modifier
-                        .weight(6f)
+                        .weight(TEXT_WEIGHT)
                         .padding(8.dp)
                 )
 
@@ -208,12 +208,12 @@ fun SubBreedItem(
             },
             fontSize = 22.sp,
             modifier = Modifier
-                .weight(6f)
+                .weight(TEXT_WEIGHT)
         )
 
         IconButton(
             modifier = Modifier
-                .weight(1f)
+                .weight(ICON_BUTTON_WEIGHT)
                 .alpha(ContentAlpha.medium),
             onClick = {
 
@@ -243,3 +243,6 @@ fun PreviewDogBreedList() {
     )
 }
 
+private const val TEXT_WEIGHT = 6f
+private const val ICON_BUTTON_WEIGHT = 1f
+private const val ROTATION_ANGLE = 1f
