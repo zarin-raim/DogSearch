@@ -10,7 +10,7 @@ import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import com.zarinraim.dogsearch.feature.list.BreedsListScreen
 import com.zarinraim.dogsearch.feature.detail.DogImageScreen
-import com.zarinraim.dogsearch.feature.detail.BreedImageModel
+import com.zarinraim.dogsearch.feature.detail.BreedImageViewModel
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -48,7 +48,7 @@ fun SetupNavGraph(
             val breedName = navBackStack.arguments?.getString("breedName")
             val subBreedName = navBackStack.arguments?.getString("subBreedName")
 
-            val viewModel = getViewModel<BreedImageModel> {
+            val viewModel = getViewModel<BreedImageViewModel> {
                 parametersOf(breedName, subBreedName)
             }
             DogImageScreen(viewModel)
@@ -64,7 +64,7 @@ fun SetupNavGraph(
         ) { navBackStack ->
             val breedName = navBackStack.arguments?.getString("breedName")
 
-            val viewModel = getViewModel<BreedImageModel> {
+            val viewModel = getViewModel<BreedImageViewModel> {
                 parametersOf(breedName, "")
             }
             DogImageScreen(viewModel)

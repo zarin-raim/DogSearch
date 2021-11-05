@@ -20,7 +20,7 @@ import com.zarinraim.dogsearch.R
 
 @ExperimentalCoilApi
 @Composable
-fun DogImageScreen(viewModel: BreedImageModel) {
+fun DogImageScreen(viewModel: BreedImageViewModel) {
     val state = viewModel.state.value
 
     DogImage(

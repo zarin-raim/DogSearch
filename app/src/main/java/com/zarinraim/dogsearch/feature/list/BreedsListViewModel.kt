@@ -8,7 +8,7 @@ import com.zarinraim.dogsearch.data.model.toBreeds
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 import kotlinx.coroutines.launch
 
-class BreedsListModel(private val repo: BreedsRepository) : ViewModel() {
+class BreedsListViewModel(private val repo: BreedsRepository) : ViewModel() {
 
     private val _state = mutableStateOf(BreedsListState())
     val state: State<BreedsListState> = _state

@@ -31,7 +31,7 @@ import org.koin.androidx.compose.viewModel
 fun BreedsListScreen(
     onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
-    val viewModel: BreedsListModel by viewModel()
+    val viewModel: BreedsListViewModel by viewModel()
     val state = viewModel.state.value
 
     val listState = rememberLazyListState()

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
  * BreedImageModel provides access to a random image of a dog
  * depending on the clicked breed/sub-breed
  */
-class BreedImageModel(
+class BreedImageViewModel(
     private val repo: BreedsRepository,
     val breedName: String,
     val subBreedName: String
