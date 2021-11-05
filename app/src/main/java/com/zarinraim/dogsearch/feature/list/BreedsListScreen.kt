@@ -88,7 +88,7 @@ fun BreedItem(
         targetValue = if (expanded.value) 180f else 0f
     )
 
-    val hasSubBreeds = subBreeds!!.list.isNotEmpty()
+    val hasSubBreeds = subBreeds?.list?.isNotEmpty() ?: false
 
     Column(
         modifier = Modifier
@@ -136,7 +136,7 @@ fun BreedItem(
             }
         }
 
-        if (hasSubBreeds && expanded.value) {
+        if (subBreeds != null && hasSubBreeds && expanded.value) {
             SubBreedList(
                 breedName = breed.name,
                 subBreeds = subBreeds.list,
