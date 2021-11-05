@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,10 +34,14 @@ fun DogImageScreen(viewModel: BreedImageViewModel) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+        val painter = rememberImagePainter(state.src)
+        val painterState = painter.state
+
         DogImage(
-            imageLink = state.src,
+            painter = painter,
             breedName = viewModel.breedName,
-            subBreedName = viewModel.subBreedName
+            subBreedName = viewModel.subBreedName,
+            viewModel = viewModel
         )
 
         if (state.error.isNotBlank()) {
@@ -50,7 +55,7 @@ fun DogImageScreen(viewModel: BreedImageViewModel) {
             )
         }
 
-        if (state.isLoading) {
+        if (state.isLoading || painterState is ImagePainter.State.Loading) {
             CircularProgressIndicator()
         }
     }
@@ -59,15 +64,11 @@ fun DogImageScreen(viewModel: BreedImageViewModel) {
 @ExperimentalCoilApi
 @Composable
 fun DogImage(
-    imageLink: String,
+    painter: ImagePainter,
     breedName: String,
-    subBreedName: String?
+    subBreedName: String?,
+    viewModel: BreedImageViewModel
 ) {
-    val painter = rememberImagePainter(imageLink)
-    val painterState = painter.state
-    if (painterState is ImagePainter.State.Loading) {
-        CircularProgressIndicator()
-    }
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
@@ -88,7 +89,8 @@ fun DogImage(
                         .fillMaxSize()
                         .weight(1f),
                     breedName = breedName,
-                    subBreedName = subBreedName
+                    subBreedName = subBreedName,
+                    viewModel = viewModel
                 )
             }
         }
@@ -107,7 +109,8 @@ fun DogImage(
                         .fillMaxSize()
                         .weight(TITLE_WEIGHT),
                     breedName = breedName,
-                    subBreedName = subBreedName
+                    subBreedName = subBreedName,
+                    viewModel = viewModel
                 )
             }
         }
@@ -121,7 +124,8 @@ fun Content(
     imageModifier: Modifier,
     buttonModifier: Modifier,
     breedName: String,
-    subBreedName: String?
+    subBreedName: String?,
+    viewModel: BreedImageViewModel
 ) {
     Image(
         painter = painter,
@@ -143,16 +147,16 @@ fun Content(
             textAlign = TextAlign.Center
         )
 
-//        OutlinedButton(
-//            onClick = {
-//
-//            }
-//        ) {
-//            Text(
-//                text = "Next Random Image",
-//                style = MaterialTheme.typography.button
-//            )
-//        }
+        OutlinedButton(
+            onClick = {
+                viewModel.getNextRandomImage()
+            }
+        ) {
+            Text(
+                text = "Next Random Image",
+                style = MaterialTheme.typography.button
+            )
+        }
     }
 }
 
