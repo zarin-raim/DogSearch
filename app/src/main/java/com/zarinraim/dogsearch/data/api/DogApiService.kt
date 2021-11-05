@@ -1,5 +1,7 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.data.api
 
+import com.zarinraim.dogsearch.data.model.BreedsResponse
+import com.zarinraim.dogsearch.data.model.BreedImageResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -17,7 +19,7 @@ private val retrofit = Retrofit.Builder()
  */
 interface DogApiService {
     @GET("breeds/list/all")
-    suspend fun getAllBreeds(): AllBreedsResponse
+    suspend fun getBreeds(): BreedsResponse
 
     @GET("breed/{breedName}/images/random")
     suspend fun getImageByBreed(

@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.feature.list
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -16,28 +16,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.zarinraim.dogsearch.R
+import com.zarinraim.dogsearch.domain.model.Breeds
+import com.zarinraim.dogsearch.domain.model.Breed
+import com.zarinraim.dogsearch.domain.model.SubBreeds
+import org.koin.androidx.compose.viewModel
 
 @ExperimentalMaterialApi
 @Composable
 fun BreedsListScreen(
-    navController: NavController,
-    viewModel: DogBreedsListModel = DogBreedsListModel()
+    onClickOpenImage: (String, String) -> Unit = { _, _ -> }
 ) {
-    val dogBreeds = viewModel.dogBreeds.value
+    val viewModel: BreedsListViewModel by viewModel()
+    val state = viewModel.state.value
 
     val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (dogBreeds.isNotEmpty()) {
+        if (state.breeds.value.isNotEmpty()) {
             BreedsList(
-                breeds = dogBreeds,
-                navController = navController,
-                listState = listState
+                breeds = state.breeds,
+                listState = listState,
+                onClickOpenImage = onClickOpenImage
             )
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -48,11 +52,11 @@ fun BreedsListScreen(
 @ExperimentalMaterialApi
 @Composable
 fun BreedsList(
-    breeds: Map<String, List<String>>,
-    navController: NavController,
-    listState: LazyListState
+    breeds: Breeds,
+    listState: LazyListState,
+    onClickOpenImage: (String, String) -> Unit
 ) {
-    val mainBreedsList = breeds.keys.toList()
+    val mainBreedsList = breeds.value.keys.toList()
 
     LazyColumn(
         modifier = Modifier
@@ -61,30 +65,30 @@ fun BreedsList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         state = listState
     ) {
-        items(mainBreedsList) { dogBreed ->
+
+        items(mainBreedsList) { breed ->
             BreedItem(
-                breedName = dogBreed,
-                subBreeds = breeds[dogBreed],
-                navController = navController
+                breed = breed,
+                subBreeds = breeds.value[breed],
+                onClickOpenImage = onClickOpenImage
             )
         }
     }
 }
 
-
 @ExperimentalMaterialApi
 @Composable
 fun BreedItem(
-    breedName: String,
-    subBreeds: List<String>?,
-    navController: NavController
+    breed: Breed,
+    subBreeds: SubBreeds?,
+    onClickOpenImage: (String, String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expanded.value) 180f else 0f
     )
 
-    val hasSubBreeds = subBreeds!!.isNotEmpty()
+    val hasSubBreeds = subBreeds?.list?.isNotEmpty() ?: false
 
     Column(
         modifier = Modifier
@@ -101,18 +105,13 @@ fun BreedItem(
                         if (hasSubBreeds) {
                             expanded.value = !expanded.value
                         } else {
-
-                            navigate(
-                                navController = navController,
-                                breedName = breedName,
-                                subBreedName = ""
-                            )
+                            onClickOpenImage(breed.name, "")
                         }
                     }
             ) {
 
                 Text(
-                    text = breedName,
+                    text = breed.name,
                     fontSize = 24.sp,
                     modifier = Modifier
                         .weight(6f)
@@ -137,11 +136,11 @@ fun BreedItem(
             }
         }
 
-        if (hasSubBreeds && expanded.value) {
+        if (subBreeds != null && hasSubBreeds && expanded.value) {
             SubBreedList(
-                breedName = breedName,
-                subBreeds = subBreeds,
-                navController = navController
+                breedName = breed.name,
+                subBreeds = subBreeds.list,
+                onClickOpenImage = onClickOpenImage
             )
         }
     }
@@ -151,19 +150,19 @@ fun BreedItem(
 fun SubBreedList(
     breedName: String,
     subBreeds: List<String>,
-    navController: NavController
+    onClickOpenImage: (String, String) -> Unit
 ) {
     Column {
         SubBreedItem(
             breedName = breedName,
             subBreedName = "",
-            navController = navController
+            onClickOpenImage = onClickOpenImage
         )
         for (subBreedName in subBreeds) {
             SubBreedItem(
                 breedName = breedName,
                 subBreedName = subBreedName,
-                navController = navController
+                onClickOpenImage = onClickOpenImage
             )
             Divider()
         }
@@ -174,22 +173,22 @@ fun SubBreedList(
 fun SubBreedItem(
     breedName: String,
     subBreedName: String,
-    navController: NavController
+    onClickOpenImage: (String, String) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(10.dp)
             .clickable {
-                navigate(
-                    navController = navController,
-                    breedName = breedName,
-                    subBreedName = subBreedName
-                )
+                onClickOpenImage(breedName, subBreedName)
             }
     ) {
         Text(
-            text = if (subBreedName.isBlank()) "Any" else subBreedName,
+            text = if (subBreedName.isBlank()) {
+                stringResource(id = R.string.any_sub_breed)
+            } else {
+                subBreedName
+            },
             fontSize = 22.sp,
             modifier = Modifier
                 .weight(6f)
@@ -210,29 +209,20 @@ fun SubBreedItem(
     }
 }
 
-fun navigate(navController: NavController, breedName: String, subBreedName: String) {
-    var request = "/$breedName"
-    request += if (subBreedName.isNotBlank()) {
-        "/$subBreedName"
-    } else ""
-
-    navController.navigate(
-        route = Screen.DogImage.route + request
-    )
-}
-
 @ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
 fun PreviewDogBreedList() {
     BreedsList(
-        breeds = mapOf(
-            "Corgi" to listOf("cardigan"),
-            "Dingo" to listOf(),
-            "Hound" to listOf("afghan", "basset")
+        breeds = Breeds(
+            mapOf(
+                Breed("Corgi") to SubBreeds(listOf("cardigan")),
+                Breed("Dingo") to SubBreeds(listOf()),
+                Breed("Hound") to SubBreeds(listOf("afghan", "basset"))
+            )
         ),
-        navController = rememberNavController(),
-        listState = rememberLazyListState()
+        listState = rememberLazyListState(),
+        onClickOpenImage = { _, _ -> }
     )
 }
 

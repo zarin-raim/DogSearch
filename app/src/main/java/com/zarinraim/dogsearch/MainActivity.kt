@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.zarinraim.dogsearch.navigation.SetupNavGraph
 import com.zarinraim.dogsearch.ui.theme.DogSearchTheme
 
 class MainActivity : ComponentActivity() {

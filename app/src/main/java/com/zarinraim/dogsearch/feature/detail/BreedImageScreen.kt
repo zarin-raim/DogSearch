@@ -1,4 +1,4 @@
-package com.zarinraim.dogsearch
+package com.zarinraim.dogsearch.feature.detail
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -10,20 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.zarinraim.dogsearch.R
 
 @ExperimentalCoilApi
 @Composable
-fun DogImageScreen(viewModel: BreedImageModel) {
-    val imageLink = viewModel.image.value
+fun DogImageScreen(viewModel: BreedImageViewModel) {
+    val state = viewModel.state.value
 
     DogImage(
-        imageLink = imageLink,
-        breedName = viewModel.breedName!!,
+        imageLink = state.src,
+        breedName = viewModel.breedName,
         subBreedName = viewModel.subBreedName
     )
 }
@@ -113,8 +115,7 @@ fun Content(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val caption = breedName +
-                if (subBreedName.isNullOrEmpty()) "" else " $subBreedName"
+        val caption = stringResource(id = R.string.breed_caption, breedName, subBreedName ?: "")
 
         Text(
             text = caption,
