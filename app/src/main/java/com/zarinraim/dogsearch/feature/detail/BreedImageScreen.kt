@@ -2,7 +2,12 @@ package com.zarinraim.dogsearch.feature.detail
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -82,10 +87,10 @@ fun DogImage(
                         painter = painter,
                         imageModifier = Modifier
                             .fillMaxSize()
-                            .weight(3f),
+                            .weight(IMAGE_WEIGHT),
                         buttonModifier = Modifier
                             .fillMaxSize()
-                            .weight(1f),
+                            .weight(TITLE_WEIGHT),
                         breedName = breedName,
                         subBreedName = subBreedName
                     )
@@ -135,3 +140,6 @@ fun Content(
 //        }
     }
 }
+
+private const val IMAGE_WEIGHT = 6f
+private const val TITLE_WEIGHT = 1f
