@@ -1,5 +1,8 @@
 package com.zarinraim.dogsearch.domain.model
 
-data class DogImage(
-    val src: String
-)
+import com.zarinraim.dogsearch.utils.PageError
+
+sealed interface DogImage {
+    data class Image(val src: String) : DogImage
+    data class Failure(val error: PageError) : DogImage
+}

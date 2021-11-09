@@ -1,19 +1,12 @@
 package com.zarinraim.dogsearch.feature.detail
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.compose.ImagePainter
-import coil.compose.rememberImagePainter
-import com.zarinraim.dogsearch.data.model.toBreeds
-import com.zarinraim.dogsearch.data.model.toDogImage
+import com.zarinraim.dogsearch.domain.model.DogImage
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
-import com.zarinraim.dogsearch.feature.list.BreedsListState
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 /**
  * BreedImageModel provides access to a random image of a dog
@@ -37,32 +30,22 @@ class BreedImageViewModel(
 
     private fun getBreedImage(breedName: String, subBreedName: String) {
         viewModelScope.launch {
-            try {
-                _state.value = BreedImageState(isLoading = true)
+            _state.value = BreedImageState(isLoading = true)
 
-                val imageSrc = when (subBreedName) {
-                    "" -> repo.getImageByBreed(breedName = breedName).toDogImage().src
-                    else -> repo.getImageBySubBreed(
-                        breedName = breedName,
-                        subBreedName = subBreedName
-                    ).toDogImage().src
-                }
+            val result = if (subBreedName.isEmpty()) {
+                repo.getImageByBreed(breedName = breedName)
+            } else {
+                repo.getImageBySubBreed(breedName = breedName, subBreedName = subBreedName)
+            }
 
-                _state.value = BreedImageState(src = imageSrc)
-            } catch (e: HttpException) {
-                _state.value = BreedImageState(
-                    error = e.localizedMessage ?: "An unexpected error occurred."
-                )
-            } catch (e: IOException) {
-                Log.e("IOException:", "$e.localizedMessage")
-                _state.value = BreedImageState(
-                    error = "Please, check your internet connection and try again."
-                )
+            when (result) {
+                is DogImage.Image -> _state.value = BreedImageState(src = result.src)
+                is DogImage.Failure -> _state.value = BreedImageState(error = result.error.msg)
             }
         }
     }
 
-    fun getNextRandomImage(){
+    fun getNextRandomImage() {
         getBreedImage(
             breedName = breedName,
             subBreedName = subBreedName

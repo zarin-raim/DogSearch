@@ -28,7 +28,7 @@ class BreedsListViewModel(private val repo: BreedsRepository) : ViewModel() {
                 _state.value = BreedsListState(breeds = breeds)
             }
             is Breeds.Failure ->
-                _state.value = BreedsListState(error = result.error)
+                _state.value = BreedsListState(error = result.error.msg)
         }
     }
 
