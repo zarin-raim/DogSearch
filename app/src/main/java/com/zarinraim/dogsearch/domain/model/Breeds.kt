@@ -1,6 +1,6 @@
 package com.zarinraim.dogsearch.domain.model
 
-@JvmInline
-value class Breeds(
-    val value: Map<Breed, SubBreeds>
-)
+sealed interface Breeds {
+    data class DogBreeds(val values: Map<Breed, SubBreeds>) : Breeds
+    data class Failure(val error: String) : Breeds
+}

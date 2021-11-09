@@ -1,6 +1,5 @@
 package com.zarinraim.dogsearch.data.model
 
-import com.zarinraim.dogsearch.domain.model.Breeds
 import com.zarinraim.dogsearch.domain.model.Breed
 import com.zarinraim.dogsearch.domain.model.SubBreeds
 
@@ -12,8 +11,8 @@ data class BreedsResponse(
     val status: String
 )
 
-fun BreedsResponse.toBreeds(): Breeds {
-    return Breeds(value = message.entries.associate {
+fun BreedsResponse.toBreeds(): Map<Breed, SubBreeds> {
+    return message.entries.associate {
         Breed(it.key) to SubBreeds(it.value)
-    })
+    }
 }

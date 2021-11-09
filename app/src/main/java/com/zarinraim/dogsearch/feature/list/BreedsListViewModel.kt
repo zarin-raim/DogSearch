@@ -1,16 +1,14 @@
 package com.zarinraim.dogsearch.feature.list
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zarinraim.dogsearch.data.model.toBreeds
+import com.zarinraim.dogsearch.domain.model.Breed
 import com.zarinraim.dogsearch.domain.model.Breeds
+import com.zarinraim.dogsearch.domain.model.SubBreeds
 import com.zarinraim.dogsearch.domain.repository.BreedsRepository
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class BreedsListViewModel(private val repo: BreedsRepository) : ViewModel() {
 
@@ -21,32 +19,26 @@ class BreedsListViewModel(private val repo: BreedsRepository) : ViewModel() {
         getBreeds()
     }
 
-    private fun getBreeds() {
-        viewModelScope.launch {
-            try {
-                _state.value = BreedsListState(isLoading = true)
-                val breeds = repo.getBreeds().toBreeds()
+    private fun getBreeds() = viewModelScope.launch {
+        _state.value = BreedsListState(isLoading = true)
+
+        when (val result = repo.getBreeds()) {
+            is Breeds.DogBreeds -> {
+                val breeds = result.values
                 _state.value = BreedsListState(breeds = breeds)
-            } catch (e: HttpException) {
-                _state.value = BreedsListState(
-                    error = e.localizedMessage ?: "An unexpected error occurred."
-                )
-            } catch (e: IOException) {
-                Log.e("IOException:", "$e.localizedMessage")
-                _state.value = BreedsListState(
-                    error = "Please, check your internet connection and try again."
-                )
             }
+            is Breeds.Failure ->
+                _state.value = BreedsListState(error = result.error)
         }
     }
 
-    fun refresh(){
+    fun refresh() {
         getBreeds()
     }
 }
 
 data class BreedsListState(
     val isLoading: Boolean = false,
-    val breeds: Breeds = Breeds(emptyMap()),
+    val breeds: Map<Breed, SubBreeds> = emptyMap(),
     val error: String = ""
 )
