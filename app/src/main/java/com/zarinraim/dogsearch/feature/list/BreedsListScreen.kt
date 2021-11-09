@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zarinraim.dogsearch.R
-import com.zarinraim.dogsearch.domain.model.Breeds
 import com.zarinraim.dogsearch.domain.model.Breed
 import com.zarinraim.dogsearch.domain.model.SubBreeds
 import org.koin.androidx.compose.viewModel
@@ -100,11 +99,11 @@ fun BreedsListScreen(
 @ExperimentalMaterialApi
 @Composable
 fun BreedsList(
-    breeds: Breeds,
+    breeds: Map<Breed, SubBreeds>,
     listState: LazyListState,
     onClickOpenImage: (String, String) -> Unit
 ) {
-    val mainBreedsList = breeds.value.keys.toList()
+    val mainBreedsList = breeds.keys.toList()
 
     LazyColumn(
         modifier = Modifier
@@ -117,7 +116,7 @@ fun BreedsList(
         items(mainBreedsList) { breed ->
             BreedItem(
                 breed = breed,
-                subBreeds = breeds.value[breed],
+                subBreeds = breeds[breed],
                 onClickOpenImage = onClickOpenImage
             )
         }
@@ -262,12 +261,10 @@ fun SubBreedItem(
 @Composable
 fun PreviewDogBreedList() {
     BreedsList(
-        breeds = Breeds(
-            mapOf(
-                Breed("Corgi") to SubBreeds(listOf("cardigan")),
-                Breed("Dingo") to SubBreeds(listOf()),
-                Breed("Hound") to SubBreeds(listOf("afghan", "basset"))
-            )
+        breeds = mapOf(
+            Breed("Corgi") to SubBreeds(listOf("cardigan")),
+            Breed("Dingo") to SubBreeds(listOf()),
+            Breed("Hound") to SubBreeds(listOf("afghan", "basset"))
         ),
         listState = rememberLazyListState(),
         onClickOpenImage = { _, _ -> }
