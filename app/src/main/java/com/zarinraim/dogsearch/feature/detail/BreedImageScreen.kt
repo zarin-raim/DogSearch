@@ -39,8 +39,6 @@ fun DogImageScreen(viewModel: BreedImageViewModel) {
 
         DogImage(
             painter = painter,
-            breedName = viewModel.breedName,
-            subBreedName = viewModel.subBreedName,
             viewModel = viewModel
         )
 
@@ -65,8 +63,6 @@ fun DogImageScreen(viewModel: BreedImageViewModel) {
 @Composable
 fun DogImage(
     painter: ImagePainter,
-    breedName: String,
-    subBreedName: String?,
     viewModel: BreedImageViewModel
 ) {
     val configuration = LocalConfiguration.current
@@ -88,8 +84,6 @@ fun DogImage(
                     buttonModifier = Modifier
                         .fillMaxSize()
                         .weight(1f),
-                    breedName = breedName,
-                    subBreedName = subBreedName,
                     viewModel = viewModel
                 )
             }
@@ -108,8 +102,6 @@ fun DogImage(
                     buttonModifier = Modifier
                         .fillMaxSize()
                         .weight(TITLE_WEIGHT),
-                    breedName = breedName,
-                    subBreedName = subBreedName,
                     viewModel = viewModel
                 )
             }
@@ -123,8 +115,6 @@ fun Content(
     painter: ImagePainter,
     imageModifier: Modifier,
     buttonModifier: Modifier,
-    breedName: String,
-    subBreedName: String?,
     viewModel: BreedImageViewModel
 ) {
     Image(
@@ -139,7 +129,7 @@ fun Content(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val caption = stringResource(id = R.string.breed_caption, breedName, subBreedName ?: "")
+        val caption = stringResource(id = R.string.breed_caption, viewModel.breedName, viewModel.subBreedName)
 
         Text(
             text = caption,
