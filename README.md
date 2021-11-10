@@ -1,12 +1,3 @@
 # DogSearch app
 
-## Basic requirements done
-1. Fetch and show the list of all breeds
-2. On item's click open the specific breed and show its picture on the second screen
-3. Written in Kotlin
-4. Using Jetpack Compose
-5. Screen rotation behavior
-
-## Known bugs
-- On 2nd+ attempt to open a breed, one image blinks before final one opens
-- No search
+Shows a fethed list of breeds from [Dog API](https://dog.ceo/). Clicking on a breed opens a random image of the chosen breed/subbreed.
